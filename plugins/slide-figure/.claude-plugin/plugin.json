@@ -1,9 +1,5 @@
 {
   "name": "slide-figure",
-  "version": "1.0.0",
-  "description": "Generate clean, presentation-ready figures and diagrams for slides.",
-  "author": {
-    "name": "Corey Phillis",
-    "email": "coreyphillis@gmail.com"
-  }
+  "description": "Converts a publication-style R figure (ggplot2 or base R) into a presentation-ready slide figure matching Corey's deck theme",
+  "version": "1.0.0"
 }

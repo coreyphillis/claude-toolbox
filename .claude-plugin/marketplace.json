@@ -1,14 +1,16 @@
 {
   "name": "corey-tools",
   "owner": {
-    "name": "Corey Phillis",
-    "email": "coreyphillis@gmail.com"
+    "name": "Corey Phillis"
+  },
+  "metadata": {
+    "description": "Cross-project Claude Code skills and shared assets (slide templates, figure conversion, etc.)"
   },
   "plugins": [
     {
       "name": "slide-figure",
       "source": "./plugins/slide-figure",
-      "description": "Generate clean, presentation-ready figures and diagrams for slides."
+      "description": "Converts a publication-style R figure (ggplot2 or base R) into a presentation-ready slide figure matching the deck theme"
     }
   ]
 }

@@ -1,40 +1,89 @@
 ---
 name: slide-figure
-description: Use when the user needs a figure, diagram, or chart designed for a slide or presentation — something that reads clearly when projected. Produces a single, self-contained figure (SVG or PNG) with slide-appropriate sizing, contrast, and minimal labeling. Triggers on "figure for my slide", "diagram for the deck", "chart for the presentation", "make this readable on a projector".
+description: Converts a publication-style R figure (ggplot2 or base R) into a presentation-ready version for Corey's slide template. Use when Corey asks to turn a figure into a slide/presentation version, make a figure "deck-ready," recreate a plot for a talk, or produce a light/dark version of an existing figure for a presentation.
 ---
 
-# Slide Figure
+# Publication figure → slide figure
 
-Create a single figure meant to be dropped onto a presentation slide. The goal is legibility from the back of a room, not density — a slide figure carries one idea.
+Corey's figures start as publication graphics: dense, small-font, built for a
+reader who can sit with them up close. This skill produces a presentation
+version for a large, well-lit (or dark) room, matching his slide deck's theme.
 
-## Principles
+**Reuse the same data-prep/analysis code as the publication figure.** Branch
+only at the plotting/theme layer, so the publication and slide versions never
+drift apart in the underlying data.
 
-- **One idea per figure.** If the content needs two ideas, make two figures.
-- **Big enough to read projected.** Minimum ~24px equivalent for body labels, ~32px+ for titles, at the figure's intended display size.
-- **High contrast.** Dark ink on light ground (or the reverse); avoid thin gray hairlines that vanish on a projector.
-- **Minimal chrome.** Drop gridlines, legends, and axis ticks that don't earn their place. Label series directly where possible.
-- **Safe margins.** Keep content inside a margin so nothing clips against slide edges.
+## Ask before generating, if not already specified
 
-## Output
+1. **Theme** — light-room or dark-room version (or both)?
+2. **Target size** — full one-idea slide (~8.5 × 4.4 in) or a half-slide
+   comparison card (~5.0 × 4.0 in), or a custom size?
 
-- Default to **SVG** (scales cleanly, editable). Offer PNG at 2x when a raster is needed.
-- Target a **16:9** frame unless told otherwise; common working size 1280×720.
-- Deliver a single self-contained file with fonts as system-safe stacks (e.g. `-apple-system, Segoe UI, Roboto, sans-serif`).
+Don't guess these — ask.
 
-## Workflow
+## Typography
 
-1. Ask (or infer) the **one idea** the figure must convey and the **display context** (light or dark deck, aspect ratio).
-2. Pick the simplest form that carries it: a labeled diagram, a single-series chart, a flow, or a comparison.
-3. Draw it with generous type, direct labels, and a restrained palette (1 accent color + neutrals).
-4. Save to the path the user wants and send the file so they can preview it.
+- Font: Calibri. Verify availability with `systemfonts::system_fonts()`
+  first; fall back to Arial/Helvetica if unavailable. Do **not** use
+  `extrafont::font_import()` or `showtext::font_add_google()` — both can hit
+  GitHub/internet blocks on Corey's corporate network.
+- Sizes, at final render size (never scale up/down after export):
+  - Axis titles: 18–20pt
+  - Axis tick labels: 16pt
+  - Direct data/line-end labels: 16–18pt (bold for the one number that matters)
+  - No plot title/subtitle/caption in the figure itself — the slide title
+    carries the takeaway.
+- Line width 1.5–2× the publication version; point size increased to match.
 
-## Palette
+## Color — always override defaults with these exact values
 
-Use a neutral base with a single accent:
+Never use ggplot2 or base R default palettes.
 
-- Ink: `#1a1a1a`
-- Ground: `#ffffff`
-- Muted: `#6b7280`
-- Accent: `#2563eb` (swap for the deck's brand color when known)
+| Role | Light theme | Dark theme |
+|---|---|---|
+| Primary (water) | `#205072` | `#8FC1DE` |
+| Secondary (earth) | `#B98243` | `#E3B36A` |
+| Tertiary (moss) | `#5B7B6F` | `#8FB09F` |
+| Accent (clay) | `#A85C32` | `#E08F5F` |
+| Text | `#1E2B2E` | `#F3EFE6` |
+| Background | `#FFFFFF` | `#13262B` |
+| Gridline/caption | `#6E6A61` | `#AFB6AE` |
 
-For a dark deck, invert ink/ground and lift the accent's lightness.
+Map series in this order: water → earth → moss → clay. If a figure needs more
+than 4 series, don't add more colors — flag it to Corey; it likely means the
+figure should be split or faceted across multiple slides instead.
+
+## Simplification (presentation Tufte, not publication Tufte)
+
+- Drop minor gridlines entirely; major gridlines only if the audience needs
+  to read an exact value, otherwise none.
+- No panel border/box.
+- Replace the legend with direct labels at the line/bar end when ≤4 series;
+  delete the legend.
+- Cut any facet/panel not essential to *this slide's* one idea — split
+  across slides rather than shrinking multiple panels to fit.
+- No 3D, shadows, or decorative chart junk.
+
+## Background handling
+
+Match the target theme's background exactly (`panel.background` /
+`plot.background` in ggplot2; device background in base R). Only leave it
+transparent if Corey says the figure is going onto a colored card rather than
+the plain slide background.
+
+## Export
+
+Always produce both formats:
+
+- **PNG**, 300 dpi, via `ragg::agg_png()` (ggplot2) or `png(type="cairo")`
+  (base R) for clean anti-aliasing.
+- **SVG**, via `ggsave(..., device = "svg")` (needs `svglite`, CRAN-only) or
+  base R's built-in `svg()` device. Neither requires a GitHub install.
+
+Dimensions match the placeholder from the questions above. Filename
+convention: `<topic>_<theme>.png` / `.svg`, e.g. `cooling_days_light.svg`,
+`cooling_days_dark.svg`.
+
+After rendering, check for label collisions — spacing that worked at 8pt in
+the publication version often overlaps at 16–20pt. Fix by adjusting margins
+or expansion factors; don't shrink the font back down to make it fit.
