@@ -1,0 +1,9 @@
+{
+  "name": "slide-figure",
+  "version": "1.0.0",
+  "description": "Generate clean, presentation-ready figures and diagrams for slides.",
+  "author": {
+    "name": "Corey Phillis",
+    "email": "coreyphillis@gmail.com"
+  }
+}

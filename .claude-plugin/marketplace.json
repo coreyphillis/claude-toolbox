@@ -1,0 +1,14 @@
+{
+  "name": "corey-tools",
+  "owner": {
+    "name": "Corey Phillis",
+    "email": "coreyphillis@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "slide-figure",
+      "source": "./plugins/slide-figure",
+      "description": "Generate clean, presentation-ready figures and diagrams for slides."
+    }
+  ]
+}
