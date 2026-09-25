@@ -8,7 +8,7 @@ and shared assets like slide templates.
 From any repo where you're running Claude Code:
 
 ```
-/plugin marketplace add <your-github-username>/claude-toolbox
+/plugin marketplace add coreyphillis/claude-toolbox
 /plugin install slide-figure@corey-tools
 /plugin install session-start-hook@corey-tools
 /plugin install close-session@corey-tools

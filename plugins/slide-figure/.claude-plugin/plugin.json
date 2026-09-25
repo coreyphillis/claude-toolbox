@@ -1,5 +1,8 @@
 {
   "name": "slide-figure",
   "description": "Converts a publication-style R figure (ggplot2 or base R) into a presentation-ready slide figure matching Corey's deck theme",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "author": {
+    "name": "Corey Phillis"
+  }
 }
