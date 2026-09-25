@@ -11,6 +11,16 @@
       "name": "slide-figure",
       "source": "./plugins/slide-figure",
       "description": "Converts a publication-style R figure (ggplot2 or base R) into a presentation-ready slide figure matching the deck theme"
+    },
+    {
+      "name": "session-start-hook",
+      "source": "./plugins/session-start-hook",
+      "description": "Creates SessionStart hooks that install dependencies so tests and linters work in Claude Code on the web sessions"
+    },
+    {
+      "name": "close-session",
+      "source": "./plugins/close-session",
+      "description": "Slash command that logs the session's changes to the repo's changelog (matching its existing format), then commits and pushes"
     }
   ]
 }

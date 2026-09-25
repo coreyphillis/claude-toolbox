@@ -1,0 +1,5 @@
+{
+  "name": "close-session",
+  "description": "Slash command that logs the session's changes to the repo's changelog (matching its existing format), then commits and pushes",
+  "version": "1.0.0"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "session-start-hook",
+  "description": "Creates SessionStart hooks that install dependencies so tests and linters work in Claude Code on the web sessions",
+  "version": "1.0.0"
+}

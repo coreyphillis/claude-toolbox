@@ -10,11 +10,14 @@ From any repo where you're running Claude Code:
 ```
 /plugin marketplace add <your-github-username>/claude-toolbox
 /plugin install slide-figure@corey-tools
+/plugin install session-start-hook@corey-tools
+/plugin install close-session@corey-tools
 ```
 
-That makes the `slide-figure` skill available in that Claude Code session —
-Claude will load it automatically when you ask to turn a figure into a slide
-version, or you can call it directly with `/slide-figure`.
+That makes the skills and commands available in that Claude Code session —
+Claude loads a skill automatically when the work matches it (e.g. turning a
+figure into a slide version), or you can call it directly (`/slide-figure`,
+`/close-session`). Install only the plugins you want in a given project.
 
 If you're on the hosted (browser) version of Claude Code, each fresh session
 runs in a new sandboxed container. If the install doesn't carry over between
@@ -37,8 +40,14 @@ Every project picks up the same version — no copy-pasting the file around.
 
 ## What's in here
 
-- `plugins/slide-figure/` — the SKILL.md that converts a publication R figure
+- `plugins/slide-figure/` — a skill that converts a publication R figure
   (ggplot2 or base R) into a presentation-ready version matching the deck theme.
+- `plugins/session-start-hook/` — a skill for building SessionStart hooks so
+  dependencies, tests, and linters work in Claude Code on the web sessions.
+- `plugins/close-session/` — a `/close-session` command that logs the
+  session's changes to the repo's changelog (matching its existing format),
+  then commits and pushes. Repo-agnostic: it adapts to whatever changelog
+  file and convention a project already uses.
 - `templates/scientific-slide-template.pptx` — the storybook-style slide
   template (light + dark master layouts, colorblind-friendly water/earth
   palette). Not a plugin — just grab it directly, or ask Claude Code to fetch
