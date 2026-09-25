@@ -1,11 +1,18 @@
 # claude-toolbox
 
-Personal cross-project resources: Claude Code skills (as a plugin marketplace)
+Personal cross-project resources: Claude Code skills (packaged as a plugin
+marketplace for local use, and usable as claude.ai skills for cloud sessions)
 and shared assets like slide templates.
 
-## One-time setup, per machine/account
+## Setup
 
-From any repo where you're running Claude Code:
+How you install depends on where you run Claude Code. Plugins work in the
+terminal, desktop (local sessions), and VS Code — but **not** in cloud
+sessions. Cloud sessions load skills a different way; see below.
+
+### Terminal, desktop (local sessions), or VS Code
+
+These surfaces support plugins. From any repo:
 
 ```
 /plugin marketplace add coreyphillis/claude-toolbox
@@ -14,29 +21,49 @@ From any repo where you're running Claude Code:
 /plugin install close-session@corey-tools
 ```
 
-That makes the skills and commands available in that Claude Code session —
-Claude loads a skill automatically when the work matches it (e.g. turning a
-figure into a slide version), or you can call it directly (`/slide-figure`,
-`/close-session`). Install only the plugins you want in a given project.
+Install only the plugins you want in a given project. Claude loads a skill
+automatically when the work matches it (e.g. turning a figure into a slide
+version), or you can call it directly (`/slide-figure`, `/close-session`).
 
-If you're on the hosted (browser) version of Claude Code, each fresh session
-runs in a new sandboxed container. If the install doesn't carry over between
-sessions, just re-run the two commands above — it takes a few seconds and
-nothing needs to be re-created, only re-attached.
+### Claude Code on the web / cloud sessions
+
+Cloud sessions — claude.ai/code, the mobile and desktop apps' cloud sessions,
+and `claude --cloud` — **do not support plugins**. `/plugin marketplace add`
+returns *"plugins are not available in this environment,"* and marketplaces or
+plugins a repo turns on in its `.claude/settings.json` are never installed.
+
+Use **skills** instead, which cloud sessions do load:
+
+- **Across every repo (recommended):** enable the skill on your claude.ai
+  account — **Settings → Capabilities → Skills** — by uploading the skill's
+  folder zipped as `<name>/SKILL.md` (e.g. a zip containing
+  `slide-figure/SKILL.md`). Cloud sessions automatically load skills you
+  enable there, in any repo, with nothing to install per session.
+- **One repo only:** commit the skill into that repo at
+  `.claude/skills/<name>/SKILL.md`. It's part of the clone, so it loads in
+  that repo's cloud sessions.
+
+The plugin's `SKILL.md` here is the source of truth for both paths — the
+`.claude-plugin/` scaffolding is only used by the plugin (local) path.
 
 ## Updating the skill
 
 1. Edit `plugins/slide-figure/skills/slide-figure/SKILL.md` in this repo.
 2. Bump the `version` field in `plugins/slide-figure/.claude-plugin/plugin.json`.
 3. Commit and push.
-4. In any project session:
-   ```
-   /plugin marketplace update
-   /plugin update slide-figure@corey-tools
-   /reload-plugins
-   ```
 
-Every project picks up the same version — no copy-pasting the file around.
+Then refresh wherever it's installed:
+
+- **Plugin path** (terminal / desktop / VS Code) — in any project session:
+  ```
+  /plugin marketplace update
+  /plugin update slide-figure@corey-tools
+  /reload-plugins
+  ```
+  Every project picks up the same version — no copy-pasting the file around.
+- **claude.ai skill path** (cloud sessions) — re-zip `slide-figure/SKILL.md`
+  and re-upload it under **Settings → Capabilities → Skills**, replacing the
+  old version. New cloud sessions pick it up automatically.
 
 ## What's in here
 
